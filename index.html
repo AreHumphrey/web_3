@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 50px;
+            background-color: #f4f8ec;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: #407010;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        input {
+            font-size: 24px;
+            padding: 12px 20px;
+            width: 250px;
+            margin-bottom: 20px;
+            border: 2px solid #407010;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .btn_clc {
+            font-size: 24px;
+            padding: 12px 24px;
+            background-color: #407010;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn_clc:hover {
+            background-color: #29430f;
+        }
+
+        /* Кнопка переключения режима */
+        .toggle-btn {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #5a8c2a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: #407010;
+        }
+
+        #singleOps {
+            display: none;
+        }
+
+        #result {
+            font-size: 36px;
+            color: #2e5a0a;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Калькулятор</h1>
+
+    <input type="number" id="num1" placeholder="Число 1">
+
+    <input type="number" id="num2" placeholder="Число 2" id="num2">
+
+    <div class="btn-group" id="doubleOps">
+        <button class="btn_clc" onclick="calculate('add')">+</button>
+        <button class="btn_clc" onclick="calculate('subtract')">−</button>
+        <button class="btn_clc" onclick="calculate('multiply')">×</button>
+        <button class="btn_clc" onclick="calculate('divide')">÷</button>
+        <button class="btn_clc" onclick="calculate('step')">xª</button>
+    </div>
+
+    <div class="btn-group" id="singleOps">
+        <button class="btn_clc" onclick="calculate('square')">x²</button>
+        <button class="btn_clc" onclick="calculate('sqrt')">√x</button>
+        <button class="btn_clc" onclick="calculate('factorial')">x!</button>
+
+    </div>
+
+    <button class="toggle-btn" onclick="toggleMode()">
+        Ещё
+    </button>
+
+    <h1 id="result">Результат: —</h1>
+
+    <script>
+
+        let isSingleMode = false;
+
+        function toggleMode() {
+            const num2Input = document.getElementById('num2');
+            const doubleOps = document.getElementById('doubleOps');
+            const singleOps = document.getElementById('singleOps');
+            const toggleBtn = document.querySelector('.toggle-btn');
+
+
+                        if (isSingleMode) {
+
+                            num2Input.style.display = 'block';
+                            doubleOps.style.display = 'flex';
+                            singleOps.style.display = 'none';
+                            toggleBtn.textContent = 'Ещё';
+                            isSingleMode = false;
+                        } else {
+                            
+                            num2Input.style.display = 'none';
+                            doubleOps.style.display = 'none';
+                            singleOps.style.display = 'flex';
+                            toggleBtn.textContent = 'Наверх';
+                            isSingleMode = true;
+                        }
+                    }
+                 
+                    function calculate(opr){
+                        const num1 = parseFloat(document.getElementById('num1').value);
+                        const num2 = parseFloat(document.getElementById('num2').value);
+                        let res;
+
+                        if (isNaN(num1)){
+                            alert('Введите первое число)');
+                            return;
+                        }
+
+                        switch(opr){
+                            case 'add':
+                                if (isNaN(num2)){
+                                    alert('Введите второе число)');
+                                    return;
+                                }
+                                res = num1 + num2;
+                                break;
+
+                            case 'subtract':
+                                if (isNaN(num2)){
+                                    alert('Введите второе число)');
+                                    return;
+                                }
+                                res = num1 - num2;
+                                break;
+                            case 'multiply':
+                                if (isNaN(num2)){
+                                    alert('Введите второе число)');
+                                    return;
+                                }
+                                res = num1 * num2;
+                                break;
+                            case 'divide':
+                                if (isNaN(num2)){
+                                    alert('Введите второе число)');
+                                    return;
+                                }
+                                if (num2 != 0){
+                                    alert('Измените второе число, деление на ноль невозможно');
+                                    return;
+                                }
+                                res = num1 / num2;
+                                break;
+
+                            case 'step':
+                              
+                            case 'square':
+                                res = num1 * num1;
+                                break;
+                            case 'sqrt':
+                                if (num1 < 0){
+                                    alert('Корень нельзя взять из отицательного числа');
+                                    return;
+                                }
+                                res = Math.sqrt(num1);
+                                break;
+
+                            case 'factorial':
+                                if (num1 < 0){
+                                    alert('Факториал отрицательного числа не существует');
+                                    return;
+                                }
+                                res = factorial(num1);
+
+                            
+                                
+                        }
+                        document.getElementById('result').textContent = 'Результат: ' + res;
+                    }
+
+                    function factorial(num1) {
+                        let res = 1;
+                        for (let i = 2; i <= num1; i++) {
+                            res *= i;
+                        }
+                        return res;
+                        
+                    }
+                </script>
+            </body>
+            </html>
